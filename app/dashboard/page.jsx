@@ -15,7 +15,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetch_ = async () => {
       try {
-        const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana,hyperliquid&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true");
+       const res = await fetch("/api/prices");
         const data = await res.json();
         setPrices({
           SOL: { price: data.solana?.usd, change: data.solana?.usd_24h_change, vol: data.solana?.usd_24h_vol, mcap: data.solana?.usd_market_cap },
@@ -24,7 +24,7 @@ export default function Dashboard() {
       } catch {}
     };
     fetch_();
-    const iv = setInterval(fetch_, 5000);
+    const iv = setInterval(fetch_,  30000);
     return () => clearInterval(iv);
   }, []);
 

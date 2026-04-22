@@ -27,7 +27,7 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana,hyperliquid&vs_currencies=usd&include_24hr_change=true");
+        const res = await fetch("/api/prices");
         const data = await res.json();
         setSolPrice({ price: data.solana?.usd, change: data.solana?.usd_24h_change });
         setHypePrice({ price: data.hyperliquid?.usd, change: data.hyperliquid?.usd_24h_change });
@@ -178,18 +178,17 @@ export default function LandingPage() {
       `}</style>
 
       {/* NAV */}
-      <nav className="ze-nav">
-        <a href="/" className="ze-logo">ZILLA <span>ENGINE</span></a>
-        <div className="ze-nav-links">
-          <Link href="/dashboard" className="ze-nav-link">Dashboard</Link>
-          <Link href="/backtester" className="ze-nav-link">Backtester</Link>
-          <Link href="/strategy" className="ze-nav-link">Strategy Builder</Link>
-          <a href="https://pangeon.xyz" target="_blank" className="ze-nav-link">Pangeon DEX ↗</a>
-        </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <Link href="/dashboard" className="ze-btn ze-btn-ghost" style={{ padding: "8px 20px", borderRadius: 8, background: "transparent", color: "#fff", border: "1px solid rgba(255,255,255,0.15)", fontSize: 13, fontWeight: 600, textDecoration: "none", display: "inline-block" }}>Launch App</Link>
-        </div>
-      </nav>
+<nav className="ze-nav">
+  <a href="/" className="ze-logo">ZILLA <span>ENGINE</span></a>
+  <div className="ze-nav-links">
+    <span style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 12, color: "rgba(255,255,255,0.25)", fontSize: 13, fontWeight: 500, cursor: "not-allowed", border: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
+      🔒 Zilla Engine
+    </span>
+  </div>
+  <a href="https://pangeon.xyz" target="_blank" rel="noreferrer" style={{ padding: "8px 20px", borderRadius: 8, background: "#fff", color: "#080808", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+    Launch App ↗
+  </a>
+</nav>
 
       {/* HERO */}
       <section className="hero">
