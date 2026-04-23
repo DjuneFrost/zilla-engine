@@ -24,19 +24,23 @@ export default function LandingPage() {
   const [hypePrice, setHypePrice] = useState(null);
   const [tick, setTick] = useState(0);
 
-  useEffect(() => {
-    const fetchPrices = async () => {
-      try {
-        const res = await fetch("/api/prices");
-        const data = await res.json();
-        setSolPrice({ price: data.solana?.usd, change: data.solana?.usd_24h_change });
-        setHypePrice({ price: data.hyperliquid?.usd, change: data.hyperliquid?.usd_24h_change });
-      } catch {}
-    };
-    fetchPrices();
-    const iv = setInterval(() => { fetchPrices(); setTick(t => t + 1); }, 10000);
-    return () => clearInterval(iv);
-  }, []);
+useEffect(() => {
+  const fetchPrices = async () => {
+    try {
+      const [solRes, hypeRes] = await Promise.all([
+        fetch("/api/prices?id=solana"),
+        fetch("/api/prices?id=hyperliquid"),
+      ]);
+      const solData = await solRes.json();
+      const hypeData = await hypeRes.json();
+      setSolPrice({ price: solData.solana?.usd, change: solData.solana?.usd_24h_change });
+      setHypePrice({ price: hypeData.hyperliquid?.usd, change: hypeData.hyperliquid?.usd_24h_change });
+    } catch {}
+  };
+  fetchPrices();
+  const iv = setInterval(fetchPrices, 30000);
+  return () => clearInterval(iv);
+}, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -190,203 +194,60 @@ export default function LandingPage() {
   </a>
 </nav>
 
-      {/* HERO */}
-      <section className="hero">
-        <div className="hero-grid" />
-        <div className="hero-badge">
-          <span className="hero-badge-dot" />
-          Structure-based DCA — Now in Beta
-        </div>
-        <h1 className="hero-title">
-          <div>ZILLA</div>
-          <div className="outline">ENGINE</div>
-        </h1>
-        <p className="hero-sub">
-          Zone-based accumulation bot for Solana and HyperLiquid tokens. Buy the dips systematically. Protect your capital. Let the market come to you.
-        </p>
-        <div className="hero-ctas">
-          <Link href="/backtester" className="hero-cta-primary">Run a Backtest</Link>
-          <Link href="/strategy" className="hero-cta-secondary">Build a Strategy</Link>
-        </div>
+{/* HERO */}
+<section className="hero">
+  <div className="hero-grid" />
+  <div className="hero-badge">
+    <span className="hero-badge-dot" />
+    Structure-based DCA — Now in Beta
+  </div>
+  <h1 className="hero-title">
+    <div>ZILLA</div>
+    <div className="outline">ENGINE</div>
+  </h1>
+  <p className="hero-sub">
+    Zone-based accumulation bot for Solana and HyperLiquid tokens. Buy the dips systematically. Protect your capital. Let the market come to you.
+  </p>
 
-        {/* Live ticker */}
-        <div className="ticker">
-          {solPrice && (
-            <div className="ticker-item">
-              <span className="ticker-sym">SOL</span>
-              <span className="ticker-price">${solPrice.price?.toFixed(2)}</span>
-              <span className={`ticker-change ${solPrice.change >= 0 ? "up" : "down"}`}>
-                {solPrice.change >= 0 ? "+" : ""}{solPrice.change?.toFixed(2)}%
-              </span>
-            </div>
-          )}
-          {hypePrice && (
-            <div className="ticker-item">
-              <span className="ticker-sym">HYPE</span>
-              <span className="ticker-price">${hypePrice.price?.toFixed(2)}</span>
-              <span className={`ticker-change ${hypePrice.change >= 0 ? "up" : "down"}`}>
-                {hypePrice.change >= 0 ? "+" : ""}{hypePrice.change?.toFixed(2)}%
-              </span>
-            </div>
-          )}
-          <div className="ticker-item">
-            <span className="ticker-sym" style={{ color: "rgba(255,255,255,0.4)" }}>MORE</span>
-            <span className="ticker-price">COMING SOON</span>
-          </div>
-        </div>
-      </section>
-
-      {/* STATS */}
-      <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 48px" }}>
-        <div className="stats">
-          {[
-            { val: "90", label: "Days of backtesting data" },
-            { val: "3", label: "Accumulation zones per strategy" },
-            { val: "0", label: "Automatic sells without your consent" },
-          ].map((s, i) => (
-            <div key={i} className="stat">
-              <div className="stat-val">{s.val}</div>
-              <div className="stat-label">{s.label}</div>
-            </div>
-          ))}
-        </div>
+  {/* Live ticker */}
+  <div className="ticker">
+    {solPrice && (
+      <div className="ticker-item">
+        <span className="ticker-sym">SOL</span>
+        <span className="ticker-price">${solPrice.price?.toFixed(2)}</span>
+        <span className={`ticker-change ${solPrice.change >= 0 ? "up" : "down"}`}>
+          {solPrice.change >= 0 ? "+" : ""}{solPrice.change?.toFixed(2)}%
+        </span>
       </div>
+    )}
+    {hypePrice && (
+      <div className="ticker-item">
+        <span className="ticker-sym">HYPE</span>
+        <span className="ticker-price">${hypePrice.price?.toFixed(2)}</span>
+        <span className={`ticker-change ${hypePrice.change >= 0 ? "up" : "down"}`}>
+          {hypePrice.change >= 0 ? "+" : ""}{hypePrice.change?.toFixed(2)}%
+        </span>
+      </div>
+    )}
+    <div className="ticker-item">
+      <span className="ticker-sym" style={{ color: "rgba(255,255,255,0.4)" }}>MORE</span>
+      <span className="ticker-price">COMING SOON</span>
+    </div>
+  </div>
 
-      {/* FEATURES */}
-      <section className="features">
-        <div className="section-label">Core Features</div>
-        <h2 className="section-title">Built Different.</h2>
-        <div className="features-grid">
-          {FEATURES.map((f, i) => (
-            <div key={i} className="feature">
-              <div className="feature-n">{f.n}</div>
-              <div className="feature-title">{f.title}</div>
-              <div className="feature-desc">{f.desc}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+  {/* Coming soon */}
+  <div style={{ marginTop: 48, padding: "20px 40px", border: "1px dashed rgba(255,255,255,0.12)", borderRadius: 14, textAlign: "center" }}>
+    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: 8 }}>More info coming soon</div>
+    <div style={{ fontSize: 13, color: "rgba(255,255,255,0.15)" }}>Performance results, strategy details and full launch incoming.</div>
+  </div>
+</section>
 
-      {/* PERFORMANCE */}
-      <section className="perf">
-        <div className="section-label">Simulated Performance</div>
-        <h2 className="section-title">What The Bot Would Have Done.</h2>
-        <div className="perf-grid">
-          {[
-            { sym: "SOL", name: "Solana", change: "+79%", period: "Last 90 days", orders: 4, deployed: 63, pnl: 79 },
-            { sym: "HYPE", name: "HyperLiquid", change: "+52%", period: "Last 60 days", orders: 3, deployed: 49, pnl: 52 },
-            { sym: "JUP", name: "Jupiter", change: "Coming soon", period: "—", orders: 0, deployed: 0, pnl: 0, soon: true },
-          ].map((t, i) => (
-            <div key={i} className="perf-card">
-              <div className="perf-card-header">
-                <div className="perf-token">
-                  <div className="perf-token-dot" style={{ opacity: t.soon ? 0.3 : 1 }} />
-                  <div>
-                    <div className="perf-token-sym" style={{ opacity: t.soon ? 0.4 : 1 }}>{t.sym}</div>
-                    <div className="perf-token-name">{t.name}</div>
-                  </div>
-                </div>
-                <div className="perf-change" style={{ opacity: t.soon ? 0.3 : 1 }}>{t.change}</div>
-              </div>
-              {t.soon ? (
-                <div style={{ textAlign: "center", padding: "32px 0", fontSize: 12, color: "rgba(255,255,255,0.2)", letterSpacing: "1px" }}>COMING SOON</div>
-              ) : (
-                <div className="perf-bars">
-                  {[
-                    { label: "Capital deployed", val: t.deployed, max: 100 },
-                    { label: "Est. PnL on deployed", val: t.pnl, max: 100 },
-                    { label: "Orders triggered", val: t.orders * 25, max: 100 },
-                  ].map((b, j) => (
-                    <div key={j} className="perf-bar-row">
-                      <div className="perf-bar-label">
-                        <span>{b.label}</span>
-                        <span style={{ color: "#fff" }}>{j === 2 ? `${t.orders} orders` : `${b.val}%`}</span>
-                      </div>
-                      <div className="perf-bar-track">
-                        <div className="perf-bar-fill" style={{ width: `${b.val}%` }} />
-                      </div>
-                    </div>
-                  ))}
-                  <div style={{ marginTop: 4, fontSize: 11, color: "rgba(255,255,255,0.2)" }}>{t.period} · Simulated</div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* BACKTESTER PREVIEW */}
-      <section className="bt-preview">
-        <div className="section-label">Backtester</div>
-        <h2 className="section-title">Test Before You Risk.</h2>
-        <div className="bt-mock">
-          <div className="bt-mock-header">
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "rgba(255,255,255,0.5)" }}>Zilla Engine — SOL/USD — Last 90 Days</span>
-              <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 6, background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)" }}>SIMULATED</span>
-            </div>
-            <div className="bt-mock-tabs">
-              {["SOL", "HYPE"].map((t, i) => <button key={t} className={`bt-tab${i === 0 ? " active" : ""}`}>{t}</button>)}
-            </div>
-          </div>
-          <div className="bt-mock-body">
-            <div className="bt-chart-area">
-              <div className="bt-zone-line" style={{ bottom: "45%" }} />
-              <div className="bt-zone-line" style={{ bottom: "30%" }} />
-              <div className="bt-bar-chart">
-                {Array.from({ length: 45 }, (_, i) => {
-                  const h = 20 + Math.sin(i * 0.4) * 15 + Math.cos(i * 0.2) * 20 + (i > 30 ? (i-30) * 2 : 0);
-                  const highlight = [8, 15, 22, 31].includes(i);
-                  return <div key={i} className={`bt-bar${highlight ? " highlight" : ""}`} style={{ height: `${Math.max(10, Math.min(95, h))}%` }} />;
-                })}
-              </div>
-            </div>
-            <div className="bt-stats-panel">
-              {[
-                { label: "Orders triggered", val: "4" },
-                { label: "Capital deployed", val: "$630" },
-                { label: "SOL accumulated", val: "7.67 SOL" },
-                { label: "Est. PnL", val: "+$40 (6.3%)" },
-              ].map((s, i) => (
-                <div key={i} className="bt-stat-row">
-                  <div className="bt-stat-label">{s.label}</div>
-                  <div className={`bt-stat-val${i === 3 ? " green" : ""}`}>{s.val}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div style={{ textAlign: "center", marginTop: 24 }}>
-          <Link href="/backtester" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 28px", borderRadius: 10, background: "#fff", color: "#080808", fontSize: 14, fontWeight: 700, textDecoration: "none", transition: "all 0.2s" }}>
-            Run Your Own Backtest →
-          </Link>
-        </div>
-      </section>
-
-      {/* WAITLIST */}
-      <section className="waitlist">
-        <div className="section-label">Early Access</div>
-        <h2 className="waitlist-title">Get Notified First.</h2>
-        <p className="waitlist-sub">Zilla Engine live execution is coming. Join the waitlist and be the first to run real strategies on SOL and HYPE.</p>
-        {submitted ? (
-          <div className="waitlist-success">✓ You're on the list — we'll be in touch.</div>
-        ) : (
-          <form className="waitlist-form" onSubmit={handleSubmit}>
-            <input className="waitlist-input" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} required />
-            <button className="waitlist-submit" type="submit">Join Waitlist</button>
-          </form>
-        )}
-      </section>
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <div className="footer-logo">ZILLA ENGINE</div>
-        <div className="footer-copy">© 2026 Zilla Engine. Powered by Pangeon DEX.</div>
-        <div style={{ display: "flex", gap: 24 }}>
-          <a href="https://pangeon.xyz" className="footer-link">Pangeon DEX</a>
-          <a href="#" className="footer-link">Twitter</a>
-        </div>
-      </footer>
-    </>
+{/* FOOTER */}
+<footer className="footer">
+  <div className="footer-logo">ZILLA ENGINE</div>
+  <div className="footer-copy">© 2026 Zilla Engine. Powered by Pangeon DEX.</div>
+  <a href="https://pangeon.xyz" className="footer-link">Pangeon DEX</a>
+</footer>
+</>
   );
 }
