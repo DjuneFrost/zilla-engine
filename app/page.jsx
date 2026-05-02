@@ -98,7 +98,7 @@ function PerfCard({ token, templateImg, logo, avgEntry, deployed, currentPrice }
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
             <img src={logo} width={28} height={28} style={{ borderRadius: "50%" }} alt={token} />
             <div>
-              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(14px, 2.2vw, 20px)", color: "#fff", letterSpacing: 1, lineHeight: 1 }}>
+              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(13px, 2vw, 17px)", color: "#fff", letterSpacing: 1, lineHeight: 1 }}>
                 {amount.toFixed(3)} <span style={{ opacity: 0.6 }}>${token}</span> accumulated
               </div>
             </div>
@@ -281,7 +281,7 @@ export default function LandingPage() {
       {/* BUILT BY */}
       <section style={{ padding: "60px 48px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         <img src="/armedcat.png" alt="Builder" style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(255,255,255,0.15)", display: "block", margin: "0 auto 16px" }} />
-        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.3)", letterSpacing: "0.5px" }}>Built by your favorite cat 🐱</div>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.3)", letterSpacing: "0.5px" }}>Built by your favorite cat </div>
       </section>
 
       {/* FOOTER */}
