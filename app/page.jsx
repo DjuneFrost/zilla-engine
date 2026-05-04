@@ -78,7 +78,6 @@ function TradeCarousel() {
   );
 }
 
-// ── PERF CARD ──────────────────────────────────────────
 function PerfCard({ token, templateImg, logo, avgEntry, deployed, currentPrice }) {
   const amount = deployed / avgEntry;
   const pnlPct = currentPrice ? ((currentPrice - avgEntry) / avgEntry) * 100 : 0;
@@ -87,40 +86,29 @@ function PerfCard({ token, templateImg, logo, avgEntry, deployed, currentPrice }
 
   return (
     <div style={{ position: "relative", flex: 1, minWidth: 0, borderRadius: 16, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
-      {/* Template image en fond */}
       <img src={`/${templateImg}`} alt={token} style={{ width: "100%", height: "auto", display: "block" }} />
-
-      {/* Overlay avec les données */}
       <div style={{ position: "absolute", inset: 0, padding: "8% 7%" }}>
-
-        {/* Logo token + montant */}
         <div style={{ position: "absolute", top: "28%", left: "7%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
             <img src={logo} width={28} height={28} style={{ borderRadius: "50%" }} alt={token} />
-            <div>
-              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(13px, 2vw, 17px)", color: "#fff", letterSpacing: 1, lineHeight: 1 }}>
-                {amount.toFixed(3)} <span style={{ opacity: 0.6 }}>${token}</span> accumulated
-              </div>
+            <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(13px, 2vw, 17px)", color: "#fff", letterSpacing: 1, lineHeight: 1 }}>
+              {amount.toFixed(3)} <span style={{ opacity: 0.6 }}>${token}</span> accumulated
             </div>
           </div>
         </div>
-
-        {/* PnL % en gros */}
         <div style={{ position: "absolute", top: "45%", left: "7%" }}>
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(28px, 5vw, 48px)", color: isPos ? "#4ade80" : "#f87171", letterSpacing: 1, lineHeight: 1 }}>
             {isPos ? "+" : ""}{pnlPct.toFixed(1)}%
           </div>
         </div>
-
-        {/* Stats en bas */}
         <div style={{ position: "absolute", bottom: "12%", left: "7%", display: "flex", gap: "clamp(16px, 4vw, 40px)" }}>
           <div>
             <div style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>Avg Entry</div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: "#fff" }}>${avgEntry}</div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: "#fff" }}>${avgEntry.toLocaleString()}</div>
           </div>
           <div>
             <div style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>Current</div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: "#fff" }}>${currentPrice?.toFixed(2) || "—"}</div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: "#fff" }}>${currentPrice?.toLocaleString() || "—"}</div>
           </div>
           <div>
             <div style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>PnL</div>
@@ -137,18 +125,22 @@ function PerfCard({ token, templateImg, logo, avgEntry, deployed, currentPrice }
 export default function LandingPage() {
   const [solPrice, setSolPrice] = useState(null);
   const [hypePrice, setHypePrice] = useState(null);
+  const [btcPrice, setBtcPrice] = useState(null);
 
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const [solRes, hypeRes] = await Promise.all([
+        const [solRes, hypeRes, btcRes] = await Promise.all([
           fetch("/api/prices?id=solana"),
           fetch("/api/prices?id=hyperliquid"),
+          fetch("/api/prices?id=bitcoin"),
         ]);
         const solData = await solRes.json();
         const hypeData = await hypeRes.json();
+        const btcData = await btcRes.json();
         setSolPrice({ price: solData.solana?.usd, change: solData.solana?.usd_24h_change });
         setHypePrice({ price: hypeData.hyperliquid?.usd, change: hypeData.hyperliquid?.usd_24h_change });
+        setBtcPrice({ price: btcData.bitcoin?.usd, change: btcData.bitcoin?.usd_24h_change });
       } catch {}
     };
     fetchPrices();
@@ -181,7 +173,7 @@ export default function LandingPage() {
         .ticker-change { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 6px; }
         .ticker-change.up { background: rgba(255,255,255,0.08); color: #fff; }
         .ticker-change.down { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); }
-        .perf-section { padding: 100px 48px 60px; max-width: 1200px; margin: 0 auto; }
+        .perf-section { padding: 100px 48px 60px; max-width: 1400px; margin: 0 auto; }
         .perf-cards { display: flex; gap: 20px; }
         .bot-section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
         .bot-header { text-align: center; margin-bottom: 72px; }
@@ -239,6 +231,13 @@ export default function LandingPage() {
               <span className={`ticker-change ${hypePrice.change >= 0 ? "up" : "down"}`}>{hypePrice.change >= 0 ? "+" : ""}{hypePrice.change?.toFixed(2)}%</span>
             </div>
           )}
+          {btcPrice && (
+            <div className="ticker-item">
+              <span className="ticker-sym">BTC</span>
+              <span className="ticker-price">${btcPrice.price?.toLocaleString()}</span>
+              <span className={`ticker-change ${btcPrice.change >= 0 ? "up" : "down"}`}>{btcPrice.change >= 0 ? "+" : ""}{btcPrice.change?.toFixed(2)}%</span>
+            </div>
+          )}
           <div className="ticker-item">
             <span className="ticker-sym" style={{ color: "rgba(255,255,255,0.4)" }}>MORE</span>
             <span className="ticker-price">COMING SOON</span>
@@ -260,6 +259,7 @@ export default function LandingPage() {
         <div className="perf-cards">
           <PerfCard token="SOL" templateImg="dcasolana.png" logo="https://assets.coingecko.com/coins/images/4128/small/solana.png" avgEntry={81} deployed={450} currentPrice={solPrice?.price} />
           <PerfCard token="HYPE" templateImg="dcahype.png" logo="https://dd.dexscreener.com/ds-data/tokens/hyperliquid/0x0d01dc56dcaaca66ad901c959b4011ec.png" avgEntry={30} deployed={360} currentPrice={hypePrice?.price} />
+          <PerfCard token="BTC" templateImg="dcabtc.png" logo="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" avgEntry={67852.54} deployed={845} currentPrice={btcPrice?.price} />
         </div>
       </section>
 
