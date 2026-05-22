@@ -11,6 +11,7 @@ const TRADE_IMAGES = [
   { file: "dogetrade.jpg", token: "DOGE" },
   { file: "pepetrade.jpg", token: "PEPE" },
   { file: "hypetrade.jpg", token: "HYPE" },
+  { file: "zectrade.PNG", token: "ZEC" },
 ];
 
 const STARS = Array.from({ length: 50 }, (_, i) => ({
