@@ -13,6 +13,11 @@ const TRADE_IMAGES = [
   { file: "hypetrade.jpg", token: "HYPE" },
 ];
 
+const STARS = Array.from({ length: 50 }, (_, i) => ({
+  id: i, top: `${(i * 37 + 11) % 100}%`, left: `${(i * 53 + 7) % 100}%`,
+  size: i % 4 === 0 ? 2 : 1, opacity: ((i * 17 + 3) % 6) * 0.04 + 0.04,
+}));
+
 function TradeCarousel() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -55,11 +60,11 @@ function TradeCarousel() {
         {TRADE_IMAGES.map((t, i) => {
           const style = getStyle(i);
           return (
-            <div key={i} onClick={() => setCurrent(i)} style={{ position: "absolute", left: "50%", top: 0, width: cardW, height: cardH, marginLeft: -cardW/2, borderRadius: 16, overflow: "hidden", border: i === current ? "1px solid rgba(255,255,255,0.3)" : "1px solid rgba(255,255,255,0.07)", cursor: i === current ? "default" : "pointer", transition: "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)", boxShadow: i === current ? "0 24px 80px rgba(0,0,0,0.8)" : "none", ...style }}>
+            <div key={i} onClick={() => setCurrent(i)} style={{ position: "absolute", left: "50%", top: 0, width: cardW, height: cardH, marginLeft: -cardW/2, borderRadius: 16, overflow: "hidden", border: i === current ? "1px solid rgba(255,255,255,0.25)" : "1px solid rgba(255,255,255,0.07)", cursor: i === current ? "default" : "pointer", transition: "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)", boxShadow: i === current ? "0 24px 80px rgba(0,0,0,0.8)" : "none", ...style }}>
               <img src={`/${t.file}`} alt={t.token} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               {i === current && (
                 <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "12px 16px", background: "linear-gradient(transparent, rgba(0,0,0,0.85))", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: isMobile ? 12 : 14, fontWeight: 600, color: "#fff" }}>{t.token}</span>
+                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: isMobile ? 12 : 14, fontWeight: 600, color: "#fff" }}>{t.token}</span>
                   <span style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "1px" }}>LIVE TRADE</span>
                 </div>
               )}
@@ -67,8 +72,8 @@ function TradeCarousel() {
           );
         })}
       </div>
-      <button onClick={prev} style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(0,0,0,0.6)", color: "#fff", fontSize: 14, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)" }}>←</button>
-      <button onClick={next} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(0,0,0,0.6)", color: "#fff", fontSize: 14, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)" }}>→</button>
+      <button onClick={prev} style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.12)", background: "rgba(0,0,0,0.6)", color: "#fff", fontSize: 14, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)" }}>←</button>
+      <button onClick={next} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.12)", background: "rgba(0,0,0,0.6)", color: "#fff", fontSize: 14, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)" }}>→</button>
       <div style={{ position: "absolute", bottom: -20, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6 }}>
         {TRADE_IMAGES.map((_, i) => (
           <div key={i} onClick={() => setCurrent(i)} style={{ width: i === current ? 16 : 5, height: 5, borderRadius: 3, background: i === current ? "#fff" : "rgba(255,255,255,0.2)", cursor: "pointer", transition: "all 0.3s" }} />
@@ -91,38 +96,34 @@ function PerfCard({ token, templateImg, logo, avgEntry, deployed, currentPrice }
         <div style={{ position: "absolute", top: "28%", left: "7%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
             <img src={logo} width={28} height={28} style={{ borderRadius: "50%" }} alt={token} />
-            <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(13px, 2vw, 17px)", color: "#fff", letterSpacing: 1, lineHeight: 1 }}>
+            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: "clamp(11px, 1.8vw, 15px)", color: "#fff", letterSpacing: 1, lineHeight: 1 }}>
               {amount.toFixed(3)} <span style={{ opacity: 0.6 }}>${token}</span> accumulated
             </div>
           </div>
         </div>
         <div style={{ position: "absolute", top: "45%", left: "7%" }}>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(28px, 5vw, 48px)", color: isPos ? "#4ade80" : "#f87171", letterSpacing: 1, lineHeight: 1 }}>
+          <div style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(28px, 5vw, 48px)", color: isPos ? "#4ade80" : "#f87171", letterSpacing: 1, lineHeight: 1 }}>
             {isPos ? "+" : ""}{pnlPct.toFixed(1)}%
           </div>
         </div>
         <div style={{ position: "absolute", bottom: "12%", left: "7%", display: "flex", gap: "clamp(16px, 4vw, 40px)" }}>
-          <div>
-            <div style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>Avg Entry</div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: "#fff" }}>${avgEntry.toLocaleString()}</div>
-          </div>
-          <div>
-            <div style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>Current</div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: "#fff" }}>${currentPrice?.toLocaleString() || "—"}</div>
-          </div>
-          <div>
-            <div style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>PnL</div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: isPos ? "#4ade80" : "#f87171" }}>
-              {isPos ? "+" : ""}${pnlUsd.toFixed(0)}
+          {[
+            { label: "Avg Entry", val: `$${avgEntry.toLocaleString()}` },
+            { label: "Current",   val: `$${currentPrice?.toLocaleString() || "—"}` },
+            { label: "PnL",       val: `${isPos ? "+" : ""}$${pnlUsd.toFixed(0)}`, color: isPos ? "#4ade80" : "#f87171" },
+          ].map((s, i) => (
+            <div key={i}>
+              <div style={{ fontSize: "clamp(9px, 1.5vw, 11px)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>{s.label}</div>
+              <div style={{ fontFamily: "'Space Mono', monospace", fontSize: "clamp(12px, 2vw, 16px)", fontWeight: 600, color: s.color || "#fff" }}>{s.val}</div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-export default function LandingPage() {
+export default function DjuneFrostPage() {
   const [solPrice, setSolPrice] = useState(null);
   const [hypePrice, setHypePrice] = useState(null);
   const [btcPrice, setBtcPrice] = useState(null);
@@ -151,71 +152,81 @@ export default function LandingPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #080808; color: #fff; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
-        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: #080808; } ::-webkit-scrollbar-thumb { background: #222; }
-        .ze-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 64px; background: rgba(8,8,8,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .ze-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #fff; text-decoration: none; }
-        .ze-logo span { color: rgba(255,255,255,0.35); }
+        body { background: #181510; color: #fff; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #181510; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 64px; background: rgba(24,21,16,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .nav-logo { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #fff; text-decoration: none; letter-spacing: 2px; }
+        .nav-logo span { color: rgba(255,255,255,0.3); }
+
         .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120px 24px 80px; text-align: center; position: relative; overflow: hidden; }
-        .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%); }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; margin-bottom: 32px; }
-        .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: blink 2s infinite; }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-        .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 12vw, 160px); line-height: 0.9; letter-spacing: -2px; margin-bottom: 28px; }
-        .hero-title .outline { -webkit-text-stroke: 1.5px rgba(255,255,255,0.7); color: transparent; }
-        .hero-sub { font-size: clamp(15px, 2vw, 18px); color: rgba(255,255,255,0.4); max-width: 520px; line-height: 1.7; margin-bottom: 48px; font-weight: 400; }
-        .ticker { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-        .ticker-item { display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); }
-        .ticker-sym { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
-        .ticker-price { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: rgba(255,255,255,0.5); }
+        .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%); }
+
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); font-size: 12px; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 32px; font-family: 'Space Mono', monospace; text-transform: uppercase; }
+        .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #14F195; box-shadow: 0 0 8px #14F195; animation: blink 2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        .hero-title { font-family: 'Cinzel', serif; font-size: clamp(60px, 10vw, 130px); line-height: 0.95; letter-spacing: -2px; margin-bottom: 28px; font-weight: 900; }
+        .hero-title .outline { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); color: transparent; }
+
+        .hero-sub { font-size: clamp(15px, 2vw, 18px); color: rgba(255,255,255,0.35); max-width: 520px; line-height: 1.7; margin-bottom: 48px; font-weight: 300; }
+
+        .ticker { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .ticker-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); }
+        .ticker-sym { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: #fff; }
+        .ticker-price { font-family: 'Space Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.45); }
         .ticker-change { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 6px; }
-        .ticker-change.up { background: rgba(255,255,255,0.08); color: #fff; }
-        .ticker-change.down { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); }
-        .perf-section { padding: 100px 48px 60px; max-width: 1400px; margin: 0 auto; }
-        .perf-cards { display: flex; gap: 20px; }
-        .bot-section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
+        .ticker-change.up { background: rgba(74,222,128,0.1); color: #4ade80; }
+        .ticker-change.down { background: rgba(248,113,113,0.1); color: #f87171; }
+
+        .section { padding: 100px 48px; max-width: 1400px; margin: 0 auto; }
+        .section-label { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.22); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
+        .section-title { font-family: 'Cinzel', serif; font-size: clamp(40px, 5vw, 72px); letter-spacing: 1px; line-height: 1; margin-bottom: 16px; font-weight: 700; }
+
+        .perf-cards { display: flex; gap: 20px; margin-top: 48px; }
+
         .bot-header { text-align: center; margin-bottom: 72px; }
-        .bot-label { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
-        .bot-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 6vw, 80px); letter-spacing: 1px; line-height: 1; margin-bottom: 20px; }
-        .bot-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(255,165,0,0.3); background: rgba(255,165,0,0.06); color: rgba(255,165,0,0.8); font-size: 13px; font-weight: 600; margin-bottom: 20px; }
-        .bot-desc { font-size: 15px; color: rgba(255,255,255,0.35); max-width: 520px; margin: 0 auto; line-height: 1.7; }
-        .coming-soon-banner { margin-top: 72px; padding: 32px; border: 1px dashed rgba(255,165,0,0.2); border-radius: 16px; text-align: center; background: rgba(255,165,0,0.02); }
-        .coming-soon-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: rgba(255,165,0,0.7); margin-bottom: 8px; }
-        .coming-soon-desc { font-size: 14px; color: rgba(255,255,255,0.25); }
+        .coming-soon-banner { margin-top: 72px; padding: 32px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 16px; text-align: center; background: rgba(255,255,255,0.02); }
+        .coming-soon-title { font-family: 'Cinzel', serif; font-size: 32px; letter-spacing: 2px; color: rgba(255,255,255,0.4); margin-bottom: 8px; font-weight: 700; }
+        .coming-soon-desc { font-size: 14px; color: rgba(255,255,255,0.22); font-weight: 300; }
+
         .footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
-        .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: rgba(255,255,255,0.4); }
-        .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
-        .footer-link { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; }
-        .footer-link:hover { color: #fff; }
+
         @media(max-width:768px){
-          .ze-nav { padding: 0 16px; }
+          .nav { padding: 0 16px; }
           .hero { padding: 100px 16px 60px; }
-          .perf-section { padding: 60px 16px; }
+          .section { padding: 60px 16px; }
           .perf-cards { flex-direction: column; }
-          .bot-section { padding: 60px 16px 80px; }
           .footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 16px; }
         }
       `}</style>
 
+      {/* BG */}
+      <div style={{ position: "fixed", inset: 0, zIndex: 0, background: "#181510", pointerEvents: "none" }}>
+        {STARS.map(s => <div key={s.id} style={{ position: "absolute", width: s.size, height: s.size, background: "#fff", borderRadius: "50%", top: s.top, left: s.left, opacity: s.opacity }} />)}
+      </div>
+
       {/* NAV */}
-      <nav className="ze-nav">
-        <a href="/" className="ze-logo">ZILLA <span>ENGINE</span></a>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 12, color: "rgba(255,255,255,0.25)", fontSize: 13, fontWeight: 500, border: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-          🔒 Zilla Engine
-        </div>
-        <a href="https://pangeon.xyz" target="_blank" rel="noreferrer" style={{ padding: "8px 20px", borderRadius: 8, background: "#fff", color: "#080808", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
-          Launch App ↗
+      <nav className="nav" style={{ position: "fixed", zIndex: 100 }}>
+        <a href="/" className="nav-logo">DJUNE <span>FROST</span></a>
+        <a href="https://pangeon.xyz" target="_blank" rel="noreferrer" style={{ padding: "8px 20px", borderRadius: 10, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", fontSize: 13, fontWeight: 700, textDecoration: "none", fontFamily: "'Cinzel', serif", letterSpacing: "0.5px" }}>
+          Launch Pangeon ↗
         </a>
       </nav>
 
       {/* HERO */}
-      <section className="hero">
+      <section className="hero" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid" />
-        <div className="hero-badge"><span className="hero-badge-dot" />Structure-based DCA — Now in Beta</div>
-        <h1 className="hero-title"><div>ZILLA</div><div className="outline">ENGINE</div></h1>
-        <p className="hero-sub">Zone-based accumulation bot for Solana and HyperLiquid tokens. Buy the dips systematically. Protect your capital. Let the market come to you.</p>
+        <div className="hero-badge"><span className="hero-badge-dot" />Trader · Builder · CEO of Pangeon</div>
+        <h1 className="hero-title">
+          <div>DJUNE</div>
+          <div className="outline">FROST</div>
+        </h1>
+        <p className="hero-sub">Trader, bot builder and CEO of Pangeon DEX. Zone-based DCA accumulation, automated strategies and on-chain tools — built in public.</p>
         <div className="ticker">
           {solPrice && (
             <div className="ticker-item">
@@ -239,22 +250,18 @@ export default function LandingPage() {
             </div>
           )}
           <div className="ticker-item">
-            <span className="ticker-sym" style={{ color: "rgba(255,255,255,0.4)" }}>MORE</span>
-            <span className="ticker-price">COMING SOON</span>
+            <span className="ticker-sym" style={{ color: "rgba(255,255,255,0.3)" }}>MORE</span>
+            <span className="ticker-price">SOON</span>
           </div>
-        </div>
-        <div style={{ marginTop: 48, padding: "20px 40px", border: "1px dashed rgba(255,255,255,0.12)", borderRadius: 14, textAlign: "center" }}>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: 8 }}>More info coming soon</div>
-          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.15)" }}>Performance results, strategy details and full launch incoming.</div>
         </div>
       </section>
 
       {/* PERF CARDS */}
-      <section className="perf-section">
+      <section className="section" style={{ position: "relative", zIndex: 1, paddingTop: 10 }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Live Performance</div>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 5vw, 64px)", letterSpacing: 1, lineHeight: 1, marginBottom: 12 }}>DCA BOT RESULTS</div>
-          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.3)", maxWidth: 480, margin: "0 auto" }}>Real accumulation from our zone-based DCA bot. Prices update live.</div>
+          <div className="section-label">Live Performance</div>
+          <div className="section-title">DCA BOT RESULTS</div>
+          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.28)", maxWidth: 480, margin: "0 auto", fontWeight: 300 }}>Real accumulation from our zone-based DCA bot. Prices update live.</div>
         </div>
         <div className="perf-cards">
           <PerfCard token="SOL" templateImg="dcasolana.png" logo="https://assets.coingecko.com/coins/images/4128/small/solana.png" avgEntry={81} deployed={450} currentPrice={solPrice?.price} />
@@ -263,13 +270,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* TRADING BOT SECTION */}
-      <section className="bot-section">
+      {/* TRADING BOT */}
+      <section className="section" style={{ position: "relative", zIndex: 1 }}>
         <div className="bot-header">
-          <div className="bot-label">Trading Bot</div>
-          <h2 className="bot-title">REAL TRADES.<br />REAL RESULTS.</h2>
-          <div className="bot-badge">⏳ Coming End of Year 2026</div>
-          <p className="bot-desc">Our advanced trading bot is currently in development. A preview of the kind of trades it will execute — precision entries, structured exits, maximum efficiency.</p>
+          <div className="section-label">Trading Bot</div>
+          <div className="section-title">REAL TRADES.<br />REAL RESULTS.</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 18px", borderRadius: 20, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.4)", fontSize: 12, fontFamily: "'Space Mono', monospace", marginBottom: 16 }}>
+            ⏳ Coming End of Year 2026
+          </div>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.3)", maxWidth: 520, margin: "0 auto", lineHeight: 1.7, fontWeight: 300 }}>
+            Our advanced trading bot is currently in development. A preview of the kind of trades it will execute — precision entries, structured exits, maximum efficiency.
+          </p>
         </div>
         <TradeCarousel />
         <div className="coming-soon-banner">
@@ -279,16 +290,17 @@ export default function LandingPage() {
       </section>
 
       {/* BUILT BY */}
-      <section style={{ padding: "60px 48px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <img src="/armedcat.png" alt="Builder" style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(255,255,255,0.15)", display: "block", margin: "0 auto 16px" }} />
-        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.3)", letterSpacing: "0.5px" }}>Built by your favorite cat </div>
+      <section style={{ padding: "60px 48px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.06)", position: "relative", zIndex: 1 }}>
+        <img src="/armedcat.png" alt="Djune Frost" style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", border: "1px solid rgba(255,255,255,0.12)", display: "block", margin: "0 auto 16px" }} />
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.25)", letterSpacing: "0.5px" }}>Built by Djune Frost</div>
+        <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.15)", marginTop: 6, letterSpacing: 1 }}>CEO of Pangeon · Builder · Trader</div>
       </section>
 
       {/* FOOTER */}
-      <footer className="footer">
-        <div className="footer-logo">ZILLA ENGINE</div>
-        <div className="footer-copy">© 2026 Zilla Engine. Powered by Pangeon DEX.</div>
-        <a href="https://pangeon.xyz" className="footer-link">Pangeon DEX</a>
+      <footer className="footer" style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: 2 }}>DJUNE FROST</div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.18)", fontFamily: "'Space Mono', monospace" }}>© 2026 · Powered by Pangeon DEX</div>
+        <a href="https://pangeon.xyz" style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", textDecoration: "none", fontFamily: "'DM Sans', sans-serif" }}>Pangeon DEX ↗</a>
       </footer>
     </>
   );
