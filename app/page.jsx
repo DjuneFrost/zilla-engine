@@ -23,6 +23,46 @@ const STARS = Array.from({ length: 80 }, (_, i) => ({
 }));
 
 
+function PnlStack({ images }) {
+  const [hovered, setHovered] = useState(null);
+  const total = images.length;
+  const CARD_W = 380;
+  const OFFSET_X = 22;
+  const OFFSET_Y = 38;
+  const totalH = CARD_W * 0.56 + (total - 1) * OFFSET_Y + 120;
+
+  return (
+    <div style={{ position: "relative", width: CARD_W + (total - 1) * OFFSET_X, height: totalH }}>
+      {[...images].reverse().map((file, ri) => {
+        const i = total - 1 - ri;
+        const isHovered = hovered === i;
+        return (
+          <div key={i}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
+            style={{
+              position: "absolute",
+              top: i * OFFSET_Y,
+              left: i * OFFSET_X,
+              width: CARD_W,
+              borderRadius: 14,
+              overflow: "hidden",
+              border: isHovered ? "1px solid rgba(255,255,255,0.22)" : "1px solid rgba(255,255,255,0.1)",
+              boxShadow: isHovered ? "0 20px 50px rgba(0,0,0,0.9)" : "0 8px 32px rgba(0,0,0,0.8)",
+              zIndex: i + 1,
+              transform: `translateY(${isHovered ? -80 : 0}px)`,
+              transition: "transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.3s ease",
+              cursor: "pointer",
+            }}
+          >
+            <img src={`/${file}`} alt={`Trade ${i + 1}`} style={{ width: "100%", height: "auto", display: "block" }} />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function TradeCarousel() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -168,7 +208,7 @@ export default function DjuneFrostPage() {
         @keyframes twinkle { 0%,100%{opacity:var(--op)} 50%{opacity:calc(var(--op)*0.3)} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
 
-        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+        .hero { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 128px 24px 40px; text-align: center; position: relative; overflow: hidden; }
         .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%); }
         .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); font-size: 12px; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 24px; font-family: 'Space Mono', monospace; text-transform: uppercase; animation: fadeUp 0.8s ease both; }
         .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #cc0000; box-shadow: 0 0 8px #cc0000; animation: blink 2s infinite; }
@@ -183,7 +223,7 @@ export default function DjuneFrostPage() {
         .ticker-change.up { background: rgba(74,222,128,0.1); color: #4ade80; }
         .ticker-change.down { background: rgba(248,113,113,0.1); color: #f87171; }
 
-        .section { padding: 100px 48px; max-width: 1400px; margin: 0 auto; }
+        .section { padding: 60px 48px; max-width: 1400px; margin: 0 auto; }
         .section-label { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.22); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
         .section-title { font-family: 'Cinzel', serif; font-size: clamp(40px, 5vw, 72px); letter-spacing: 1px; line-height: 1; margin-bottom: 16px; font-weight: 700; }
         .perf-cards { display: flex; gap: 20px; margin-top: 48px; }
@@ -235,40 +275,14 @@ export default function DjuneFrostPage() {
           <div>DJUNE</div>
           <div className="outline">FROST</div>
         </h1>
-        <p className="hero-sub">Trader, bot builder and CEO of Pangeon DEX. Zone-based DCA accumulation, automated strategies and on-chain tools — built in public.</p>
-        <div className="ticker">
-          {solPrice && (
-            <div className="ticker-item">
-              <span className="ticker-sym">SOL</span>
-              <span className="ticker-price">${solPrice.price?.toFixed(2)}</span>
-              <span className={`ticker-change ${solPrice.change >= 0 ? "up" : "down"}`}>{solPrice.change >= 0 ? "+" : ""}{solPrice.change?.toFixed(2)}%</span>
-            </div>
-          )}
-          {hypePrice && (
-            <div className="ticker-item">
-              <span className="ticker-sym">HYPE</span>
-              <span className="ticker-price">${hypePrice.price?.toFixed(2)}</span>
-              <span className={`ticker-change ${hypePrice.change >= 0 ? "up" : "down"}`}>{hypePrice.change >= 0 ? "+" : ""}{hypePrice.change?.toFixed(2)}%</span>
-            </div>
-          )}
-          {btcPrice && (
-            <div className="ticker-item">
-              <span className="ticker-sym">BTC</span>
-              <span className="ticker-price">${btcPrice.price?.toLocaleString()}</span>
-              <span className={`ticker-change ${btcPrice.change >= 0 ? "up" : "down"}`}>{btcPrice.change >= 0 ? "+" : ""}{btcPrice.change?.toFixed(2)}%</span>
-            </div>
-          )}
-          <div className="ticker-item">
-            <span className="ticker-sym" style={{ color: "rgba(255,255,255,0.25)" }}>MORE</span>
-            <span className="ticker-price">SOON</span>
-          </div>
-        </div>
+        <p className="hero-sub">Trader, Strategy builder, Bots creator, Building smarter ways to trade, CEO of Pangeon</p>
+
       </section>
 
       <div className="divider" />
 
       {/* PERF CARDS */}
-      <section className="section" style={{ position: "relative", zIndex: 1, paddingTop: 80 }}>
+      <section className="section" style={{ position: "relative", zIndex: 1, paddingTop: 40 }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div className="section-label">Live Performance</div>
           <div className="section-title">DCA BOT RESULTS</div>
@@ -276,34 +290,43 @@ export default function DjuneFrostPage() {
         </div>
         <div className="perf-cards">
           <PerfCard token="SOL" templateImg="dcasolana.png" logo="https://assets.coingecko.com/coins/images/4128/small/solana.png" avgEntry={81} deployed={450} currentPrice={solPrice?.price} />
-          <PerfCard token="HYPE" templateImg="dcahype.png" logo="https://dd.dexscreener.com/ds-data/tokens/hyperliquid/0x0d01dc56dcaaca66ad901c959b4011ec.png" avgEntry={30} deployed={360} currentPrice={hypePrice?.price} />
-          <PerfCard token="BTC" templateImg="dcabtc.png" logo="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" avgEntry={67852.54} deployed={845} currentPrice={btcPrice?.price} />
+          <PerfCard token="SPCX" templateImg="dcaspcx.png" logo="https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fs3-symbol-logo.tradingview.com%2Fspacex.svg&dpr=2&quality=80" avgEntry={162} deployed={500} currentPrice={null} />
+          <PerfCard token="NVDA" templateImg="dcanvda.png" logo="https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fxstocks-metadata.backed.fi%2Flogos%2Ftokens%2FNVDAx.png&dpr=2&quality=80" avgEntry={114} deployed={500} currentPrice={null} />
         </div>
       </section>
 
       <div className="divider" />
 
-      {/* TRADING BOT */}
-      <section className="section" style={{ position: "relative", zIndex: 1 }}>
-        <div className="bot-header">
-          <div className="section-label">Trading Bot</div>
-          <div className="section-title">REAL TRADES.<br />REAL RESULTS.</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 18px", borderRadius: 20, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.4)", fontSize: 12, fontFamily: "'Space Mono', monospace", marginBottom: 16 }}>
-            ⏳ Coming End of Year 2026
-          </div>
-          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.28)", maxWidth: 520, margin: "0 auto", lineHeight: 1.7, fontWeight: 300 }}>
-            Our advanced trading bot is currently in development. A preview of the kind of trades it will execute — precision entries, structured exits, maximum efficiency.
-          </p>
+      {/* PNL HIGHLIGHTS */}
+      <section style={{ padding: "60px 0", position: "relative", zIndex: 1 }}>
+        <div style={{ textAlign: "center", marginBottom: 64 }}>
+          <div className="section-label">Trading Results</div>
+          <div className="section-title">PnL HIGHLIGHTS</div>
+          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.25)", maxWidth: 480, margin: "0 auto", fontWeight: 300 }}>A selection of recent closed trades.</div>
         </div>
-        <TradeCarousel />
-        <div className="coming-soon-banner">
-          <div className="coming-soon-title">COMING END OF YEAR</div>
-          <div className="coming-soon-desc">Automated trading bot with zone-based entries, smart exits and capital protection — launching Q4 2026.</div>
+        <div style={{ maxWidth: 1400, margin: "0 auto", padding: "0 48px", marginBottom: 80 }}>
+          <TradeCarousel />
+        </div>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 80, width: "100%", paddingLeft: 0, paddingRight: 0 }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", flex: 1 }}>
+            <PnlStack images={["lighter1.png","lighter2.png","lighter3.png","lighter4.png","lighter5.png"]} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-start", flex: 1 }}>
+            <PnlStack images={["pacifica1.png","pacifica2.png","pacifica3.png","pacifica4.png","pacifica5.png"]} />
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 80, width: "100%", marginTop: 80 }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", flex: 1 }}>
+            <PnlStack images={["pacifica7.png","pacifica8.png","pacifica9.png","pacifica10.png"]} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-start", flex: 1 }}>
+            <PnlStack images={["pacifica11.png","pacifica12.png","pacifica13.png","pacifica14.png"]} />
+          </div>
         </div>
       </section>
 
       {/* BUILT BY */}
-      <section style={{ padding: "60px 48px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)", position: "relative", zIndex: 1 }}>
+      <section style={{ padding: "40px 48px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)", position: "relative", zIndex: 1 }}>
         <img src="/armedcat.png" alt="Djune Frost" style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", border: "1px solid rgba(255,255,255,0.08)", display: "block", margin: "0 auto 16px" }} />
         <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.22)", letterSpacing: "0.5px" }}>Built by Djune Frost</div>
         <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.15)", marginTop: 6, letterSpacing: 1 }}>CEO of Pangeon · Builder · Trader</div>
