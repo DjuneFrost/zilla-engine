@@ -28,13 +28,13 @@ function StrategyCard({ item }) {
       </div>
       <div style={{ padding: "16px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-          <div style={{ fontFamily: "'Cinzel', serif", fontSize: 16, fontWeight: 700, color: "#fff" }}>{item.pair}</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: "#fff" }}>{item.pair}</div>
           <div style={{ display: "flex", gap: 6 }}>
-            <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.35)", padding: "3px 8px", borderRadius: 6, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>{item.timeframe}</span>
-            <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{item.date}</span>
+            <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.85)", padding: "3px 8px", borderRadius: 6, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>{item.timeframe}</span>
+            <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.75)" }}>{item.date}</span>
           </div>
         </div>
-        {item.note && <div style={{ fontSize: 13, color: "rgba(255,255,255,0.3)", lineHeight: 1.6, fontWeight: 300 }}>{item.note}</div>}
+        {item.note && <div style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", lineHeight: 1.6, fontWeight: 300 }}>{item.note}</div>}
       </div>
     </div>
   );
@@ -47,39 +47,41 @@ export default function StrategyPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0d0f1a; color: #fff; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+        body { background: #000000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0d0f1a; }
+        ::-webkit-scrollbar-track { background: #000000; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 64px; background: rgba(13,15,26,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .nav-logo { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #fff; text-decoration: none; letter-spacing: 2px; }
-        .nav-logo span { color: rgba(255,255,255,0.25); }
-        .nav-links { display: flex; align-items: center; gap: 4px; }
-        .nav-link { padding: 7px 16px; border-radius: 10px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35); text-decoration: none; letter-spacing: 0.5px; transition: all 0.2s; border: 1px solid transparent; }
-        .nav-link:hover { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.08); }
-        .nav-link.active { color: #fff; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+        .nav { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 100; width: calc(100% - 280px); max-width: 1000px; }
+        .nav-pill { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; background: rgba(8,0,20,0.92); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; padding: 4px 8px 4px 14px; box-shadow: 0 4px 30px rgba(0,0,0,0.4); height: 44px; width: 100%; }
+        .nav-links { display: flex; align-items: center; gap: 2px; justify-content: center; }
+        .nav-link { padding: 6px 22px; border-radius: 50px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.75); text-decoration: none; letter-spacing: 0.5px; transition: all 0.2s; border: 1px solid transparent; white-space: nowrap; }
+        .nav-link:hover { color: rgba(255,255,255,0.8); }
+        .nav-link.active { color: #C44FFF; background: transparent; border-color: transparent; text-shadow: 0 0 12px rgba(180,79,255,0.8), 0 0 24px rgba(150,40,200,0.5); }
+        .nav-auth { display: flex; align-items: center; gap: 8px; justify-content: flex-end; padding-right: 4px; }
+        .nav-login { padding: 6px 18px; border-radius: 50px; background: transparent; border: 1px solid transparent; color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; text-decoration: none; font-family: 'Space Mono', monospace; letter-spacing: 0.5px; white-space: nowrap; cursor: default; }
+        .nav-signup { padding: 6px 18px; border-radius: 50px; background: rgba(150,40,200,0.25); border: 1px solid rgba(150,40,200,0.5); color: #D44FFF; font-size: 11px; font-weight: 700; text-decoration: none; font-family: 'Space Mono', monospace; letter-spacing: 0.5px; white-space: nowrap; cursor: default; }
+
         @media(max-width:768px){ .nav { padding: 0 16px; } .nav-links { gap: 2px; } .nav-link { padding: 6px 10px; font-size: 10px; } .page-wrap { padding: 0 16px !important; } .strat-grid { grid-template-columns: 1fr !important; } }
       `}</style>
 
       {/* BG */}
-      <div style={{ position: "fixed", inset: 0, zIndex: 0, background: "radial-gradient(ellipse 120% 80% at 50% 0%, #110b0b 0%, #0d0f1a 40%, #080a14 100%)", pointerEvents: "none" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 0, background: "radial-gradient(ellipse 120% 80% at 50% 0%, #0a0008 0%, #000000 40%, #000000 100%)", pointerEvents: "none" }}>
         {STARS.map(s => <div key={s.id} style={{ position: "absolute", width: s.size, height: s.size, background: "#fff", borderRadius: "50%", top: s.top, left: s.left, opacity: s.opacity }} />)}
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(120,0,0,0.07) 0%, transparent 70%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(150,40,200,0.07) 0%, transparent 70%)" }} />
       </div>
-
       {/* NAV */}
       <nav className="nav">
-        <a href="/" className="nav-logo">DJUNE <span>FROST</span></a>
-        <div className="nav-links">
-          <a href="/" className="nav-link">Home</a>
-          <a href="/dca-bots" className="nav-link">DCA Bots</a>
-          <a href="/strategy" className="nav-link active">Strategy</a>
+        <div className="nav-pill">
+          <img src="/logodfs.png" alt="Djune Frost" style={{ height: 36, width: "auto", objectFit: "contain", flexShrink: 0, marginRight: 8 }} />
+          <div className="nav-links">
+            <a href="/" className="nav-link">Home</a>
+            <a href="/dca-bots" className="nav-link">DCA Bots</a>
+            <a href="/strategy" className="nav-link active">Strategy</a>
+          </div>
+          <div className="nav-auth"><span className="nav-login">Log in</span><span className="nav-signup">Sign up</span></div>
         </div>
-        <a href="https://pangeon.xyz" target="_blank" rel="noreferrer" style={{ padding: "8px 20px", borderRadius: 10, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", fontSize: 13, fontWeight: 700, textDecoration: "none", fontFamily: "'Cinzel', serif", letterSpacing: "0.5px" }}>
-          Launch Pangeon ↗
-        </a>
       </nav>
 
       <div style={{ position: "relative", zIndex: 1, paddingTop: 120, paddingBottom: 100 }}>
@@ -87,12 +89,12 @@ export default function StrategyPage() {
 
           {/* Header */}
           <div style={{ marginBottom: 56 }}>
-            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "3px", textTransform: "uppercase", marginBottom: 16 }}>Chart Analysis</div>
-            <div style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(48px, 6vw, 80px)", fontWeight: 900, lineHeight: 0.95, letterSpacing: "-1px", marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.8)", letterSpacing: "3px", textTransform: "uppercase", marginBottom: 16 }}>Chart Analysis</div>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px, 6vw, 80px)", fontWeight: 900, lineHeight: 0.95, letterSpacing: "-1px", marginBottom: 20 }}>
               <div>TRADING</div>
-              <div style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.25)", color: "transparent" }}>STRATEGY</div>
+              <div style={{ WebkitTextStroke: "1.5px rgba(150,40,200,0.5)", color: "transparent" }}>STRATEGY</div>
             </div>
-            <div style={{ fontSize: 15, color: "rgba(255,255,255,0.28)", maxWidth: 520, lineHeight: 1.7, fontWeight: 300 }}>
+            <div style={{ fontSize: 15, color: "rgba(255,255,255,0.85)", maxWidth: 520, lineHeight: 1.7, fontWeight: 300 }}>
               Real setups shared from TradingView. Zone-based entries, structured exits, and on-chain context — posted regularly.
             </div>
           </div>
@@ -116,14 +118,14 @@ export default function StrategyPage() {
           ) : (
             <div style={{ marginTop: 48 }}>
               <div style={{ padding: "80px 40px", borderRadius: 20, border: "1px dashed rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)", textAlign: "center" }}>
-                <div style={{ fontFamily: "'Cinzel', serif", fontSize: 28, fontWeight: 700, color: "rgba(255,255,255,0.3)", marginBottom: 12, letterSpacing: "2px" }}>COMING SOON</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "rgba(255,255,255,0.85)", marginBottom: 12, letterSpacing: "2px" }}>COMING SOON</div>
                 <div style={{ fontSize: 14, color: "rgba(255,255,255,0.18)", fontWeight: 300, lineHeight: 1.7, maxWidth: 380, margin: "0 auto" }}>
                   TradingView chart analyses will be posted here regularly.<br />
                   Zone-based setups, breakouts, and swing trade ideas.
                 </div>
                 <div style={{ marginTop: 28, display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 18px", borderRadius: 20, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)" }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", background: "rgba(255,255,255,0.2)" }} />
-                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "1px" }}>FOLLOW ON TWITTER FOR UPDATES</span>
+                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.8)", letterSpacing: "1px" }}>FOLLOW ON TWITTER FOR UPDATES</span>
                 </div>
               </div>
 
@@ -135,7 +137,7 @@ export default function StrategyPage() {
                   { label: "Swing Trade", desc: "Multi-day positions, strict risk mgmt" },
                 ].map((s, i) => (
                   <div key={i} style={{ padding: "24px 20px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.02)", textAlign: "center" }}>
-                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.35)", marginBottom: 8, letterSpacing: "1px" }}>{s.label}</div>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.85)", marginBottom: 8, letterSpacing: "1px" }}>{s.label}</div>
                     <div style={{ fontSize: 12, color: "rgba(255,255,255,0.18)", fontWeight: 300, lineHeight: 1.6 }}>{s.desc}</div>
                   </div>
                 ))}
@@ -146,9 +148,9 @@ export default function StrategyPage() {
       </div>
 
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "28px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative", zIndex: 1 }}>
-        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 2 }}>DJUNE FROST</div>
-        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.15)", fontFamily: "'Space Mono', monospace" }}>© 2026 · Powered by Pangeon DEX</div>
-        <a href="https://pangeon.xyz" style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", textDecoration: "none" }}>Pangeon DEX ↗</a>
+        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: 2 }}>DJUNE FROST</div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontFamily: "'Space Mono', monospace" }}>© 2026 · Powered by Pangeon DEX</div>
+        <a href="https://pangeon.xyz" style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Pangeon DEX ↗</a>
       </footer>
     </>
   );
