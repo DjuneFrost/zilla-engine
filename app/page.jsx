@@ -250,10 +250,11 @@ export default function DjuneFrostPage() {
               { src: "https://assets.coingecko.com/coins/images/4128/small/solana.png", label: "SOL" },
               { src: "https://dd.dexscreener.com/ds-data/tokens/hyperliquid/0x0d01dc56dcaaca66ad901c959b4011ec.png", label: "HYPE" },
               { src: "https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fs3-symbol-logo.tradingview.com%2Fspacex.svg&dpr=2&quality=80", label: "SPCX" },
-              { src: "https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fxstocks-metadata.backed.fi%2Flogos%2Ftokens%2FNVDAx.png&dpr=2&quality=80", label: "NVDA" },
+              { src: "https://assets.lighter.xyz/fe/token/nvda.png", label: "NVDA" },
               { src: "https://assets.lighter.xyz/fe/token/hood.png", label: "HOOD" },
               { src: "https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fs3-symbol-logo.tradingview.com%2Fapple.svg&dpr=2&quality=80", label: "AAPL" },
               { src: "https://assets.lighter.xyz/fe/token/xau.png", label: "XAU" },
+              { src: "https://assets.lighter.xyz/fe/token/natgas.png", label: "NATGAS" },
             ].map((token, i) => (
               <div key={i} title={token.label} style={{ width: 34, height: 34, borderRadius: "50%", border: "2px solid rgba(10,0,20,0.9)", marginLeft: i === 0 ? 0 : -10, position: "relative", zIndex: 9 - i, overflow: "hidden", background: "rgba(20,10,40,0.9)", flexShrink: 0 }}>
                 <img src={token.src} alt={token.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -273,7 +274,7 @@ export default function DjuneFrostPage() {
         <div className="perf-cards">
           <PerfCard token="SOL" templateImg="dcasolana.png" logo="https://assets.coingecko.com/coins/images/4128/small/solana.png" avgEntry={81} deployed={450} currentPrice={solPrice?.price} />
           <PerfCard token="SPCX" templateImg="dcaspcx.png" logo="https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fs3-symbol-logo.tradingview.com%2Fspacex.svg&dpr=2&quality=80" avgEntry={162} deployed={500} currentPrice={null} />
-          <PerfCard token="NVDA" templateImg="dcanvda.png" logo="https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fxstocks-metadata.backed.fi%2Flogos%2Ftokens%2FNVDAx.png&dpr=2&quality=80" avgEntry={114} deployed={500} currentPrice={null} />
+          <PerfCard token="NVDA" templateImg="dcanvda.png" logo="https://assets.lighter.xyz/fe/token/nvda.png" avgEntry={114} deployed={500} currentPrice={null} />
         </div>
       </section>
 
@@ -282,8 +283,20 @@ export default function DjuneFrostPage() {
       {/* BUILT BY */}
       <section style={{ padding: "40px 48px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)", position: "relative", zIndex: 1 }}>
         <img src="/armedcat.png" alt="Djune Frost" style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", border: "1px solid rgba(255,255,255,0.08)", display: "block", margin: "0 auto 16px" }} />
-        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.8)", letterSpacing: "0.5px" }}>Built by Djune Frost</div>
-        <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.7)", marginTop: 6, letterSpacing: 1 }}>CEO of Pangeon · Builder · Trader</div>
+        <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.85)", letterSpacing: "0.5px", marginBottom: 14 }}>Built by Djune Frost</div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 14, fontFamily: "'Inter', sans-serif", letterSpacing: "1px", textTransform: "uppercase" }}>Join Me</div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
+          <a href="https://x.com/DjuneFrost" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", textDecoration: "none", transition: "all 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(150,40,200,0.25)"; e.currentTarget.style.borderColor = "rgba(150,40,200,0.5)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.258 5.632 5.906-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@djunefrost" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", textDecoration: "none", transition: "all 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(150,40,200,0.25)"; e.currentTarget.style.borderColor = "rgba(150,40,200,0.5)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.54V6.78a4.85 4.85 0 01-1.02-.09z"/></svg>
+          </a>
+        </div>
       </section>
 
       {/* FOOTER */}
