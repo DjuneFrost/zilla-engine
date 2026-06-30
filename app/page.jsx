@@ -133,10 +133,12 @@ function PerfCard({ token, templateImg, logo, avgEntry, deployed, currentPrice }
 
 function FloatingPnlCard({ file, x, y, scale, delay }) {
   return (
-    <div style={{
+    <div className="floating-pnl-card" style={{
       position: "absolute", left: `${x}%`, top: `${y}%`,
+      "--card-scale": scale,
       transform: `translate(-50%, -50%) scale(${scale})`,
-      width: 220, borderRadius: 14,
+      width: 220,
+      borderRadius: 14,
       overflow: "hidden",
       border: `1px solid rgba(150,40,200,${scale * 0.5})`,
       boxShadow: `0 ${8*scale}px ${32*scale}px rgba(100,20,160,${scale*0.35})`,
@@ -234,6 +236,8 @@ export default function DjuneFrostPage() {
           .section { padding: 60px 16px; }
           .perf-cards { flex-direction: column; }
           .footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 16px; }
+          .floating-pnl-card { width: 110px !important; }
+          .floating-pnl-rect { height: 420px !important; }
         }
 
 
@@ -382,7 +386,7 @@ export default function DjuneFrostPage() {
           <div style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", maxWidth: 480, margin: "0 auto", fontWeight: 300 }}>Hover a card to zoom in</div>
         </div>
         {/* Starfield rectangle — full width */}
-        <div style={{
+        <div className="floating-pnl-rect" style={{
           position: "relative",
           width: "100%",
           height: 680,
