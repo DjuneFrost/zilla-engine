@@ -7,42 +7,19 @@ const STARS = Array.from({ length: 80 }, (_, i) => ({
   opacity: ((i * 17 + 3) % 6) * 0.04 + 0.03,
 }));
 
-// ─── Add your TradingView screenshots here ───────────────────────────────────
-// { file: "strategy1.jpg", pair: "BTC/USDT", timeframe: "4H",
-//   type: "Long" | "Short", date: "Jun 2026", note: "..." }
-const STRATEGIES = [];
-// ─────────────────────────────────────────────────────────────────────────────
+const STRATEGIES = [
+  {
+    file: "zigzag.png",
+    name: "ZigZag Strategy",
+    description: "Structure Pro is a professional market structure engine that automatically maps swing highs and swing lows on any chart, in real time, without repainting. Unlike classic ZigZag tools that silently redraw their pivots, Structure Pro freezes every confirmed pivot permanently and clearly separates it from the still-forming leg. Each pivot is automatically tagged with its structure label — HH, HL, LH, LL — giving you an instant read on whether the market is bullish or bearish. The BOS signal confirms trend continuation when price breaks a key level, while the CHoCH signal warns you of a potential reversal before the trend officially flips. A real-time dashboard shows you the overall structure, the active leg direction, the developing leg size in %, and the exact price level that would confirm the next pivot. Six built-in alerts fire on bar close — never mid-candle — so every signal is a settled fact before you act on it. Compatible with crypto, stocks and indices on any timeframe, Structure Pro is the foundation of the Djune Frost Strategy system — because before you trade the signal, you need to know the direction.",
+    tag: "Indicator",
+    date: "2026",
+  }
+];
 
-const FILTERS = ["All", "Long", "Short"];
 
-function StrategyCard({ item }) {
-  return (
-    <div style={{ borderRadius: 16, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(13,10,10,0.6)", overflow: "hidden", backdropFilter: "blur(10px)", transition: "border-color 0.2s" }}
-      onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
-      onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"}>
-      <div style={{ position: "relative", aspectRatio: "16/9", background: "rgba(0,0,0,0.4)", overflow: "hidden" }}>
-        <img src={`/${item.file}`} alt={item.pair} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-        <div style={{ position: "absolute", top: 12, right: 12, padding: "4px 10px", borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", fontFamily: "'Space Mono', monospace", fontSize: 10, fontWeight: 700, color: "#fff", letterSpacing: "1px" }}>
-          {item.type.toUpperCase()}
-        </div>
-      </div>
-      <div style={{ padding: "16px 20px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: "#fff" }}>{item.pair}</div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.85)", padding: "3px 8px", borderRadius: 6, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>{item.timeframe}</span>
-            <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.75)" }}>{item.date}</span>
-          </div>
-        </div>
-        {item.note && <div style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", lineHeight: 1.6, fontWeight: 300 }}>{item.note}</div>}
-      </div>
-    </div>
-  );
-}
 
 export default function StrategyPage() {
-  const [filter, setFilter] = useState("All");
-  const filtered = STRATEGIES.filter(s => filter === "All" || s.type === filter);
 
   return (
     <>
@@ -91,59 +68,37 @@ export default function StrategyPage() {
           <div style={{ marginBottom: 56 }}>
             <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.8)", letterSpacing: "3px", textTransform: "uppercase", marginBottom: 16 }}>Chart Analysis</div>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px, 6vw, 80px)", fontWeight: 900, lineHeight: 0.95, letterSpacing: "-1px", marginBottom: 20 }}>
-              <div>TRADING</div>
-              <div style={{ WebkitTextStroke: "1.5px rgba(150,40,200,0.5)", color: "transparent" }}>STRATEGY</div>
+              <div>TRADING <span style={{ WebkitTextStroke: "1.5px rgba(150,40,200,0.5)", color: "transparent" }}>STRATEGY</span></div>
             </div>
             <div style={{ fontSize: 15, color: "rgba(255,255,255,0.85)", maxWidth: 520, lineHeight: 1.7, fontWeight: 300 }}>
               Real setups shared from TradingView. Zone-based entries, structured exits, and on-chain context — posted regularly.
             </div>
           </div>
 
-          {/* Filter bar */}
-          {STRATEGIES.length > 0 && (
-            <div style={{ display: "flex", gap: 8, marginBottom: 40 }}>
-              {FILTERS.map(f => (
-                <button key={f} onClick={() => setFilter(f)} style={{ padding: "7px 18px", borderRadius: 10, fontFamily: "'Space Mono', monospace", fontSize: 11, fontWeight: 700, letterSpacing: "0.5px", cursor: "pointer", transition: "all 0.2s", border: "1px solid", borderColor: filter === f ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.07)", background: filter === f ? "rgba(255,255,255,0.07)" : "transparent", color: filter === f ? "#fff" : "rgba(255,255,255,0.35)" }}>
-                  {f}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Grid or Empty State */}
-          {filtered.length > 0 ? (
-            <div className="strat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: 20 }}>
-              {filtered.map((item, i) => <StrategyCard key={i} item={item} />)}
-            </div>
-          ) : (
-            <div style={{ marginTop: 48 }}>
-              <div style={{ padding: "80px 40px", borderRadius: 20, border: "1px dashed rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)", textAlign: "center" }}>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "rgba(255,255,255,0.85)", marginBottom: 12, letterSpacing: "2px" }}>COMING SOON</div>
-                <div style={{ fontSize: 14, color: "rgba(255,255,255,0.18)", fontWeight: 300, lineHeight: 1.7, maxWidth: 380, margin: "0 auto" }}>
-                  TradingView chart analyses will be posted here regularly.<br />
-                  Zone-based setups, breakouts, and swing trade ideas.
-                </div>
-                <div style={{ marginTop: 28, display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 18px", borderRadius: 20, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)" }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", background: "rgba(255,255,255,0.2)" }} />
-                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.8)", letterSpacing: "1px" }}>FOLLOW ON TWITTER FOR UPDATES</span>
-                </div>
-              </div>
-
-              {/* Strategy Types Preview */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 24 }}>
-                {[
-                  { label: "Zone DCA", desc: "Entries by support/resistance zones" },
-                  { label: "Breakout", desc: "Volume-confirmed structure breaks" },
-                  { label: "Swing Trade", desc: "Multi-day positions, strict risk mgmt" },
-                ].map((s, i) => (
-                  <div key={i} style={{ padding: "24px 20px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.02)", textAlign: "center" }}>
-                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.85)", marginBottom: 8, letterSpacing: "1px" }}>{s.label}</div>
-                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.18)", fontWeight: 300, lineHeight: 1.6 }}>{s.desc}</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+            {STRATEGIES.map((item, i) => (
+              <div key={i} style={{ borderRadius: 20, border: "1px solid rgba(150,40,200,0.2)", background: "rgba(8,0,20,0.6)", overflow: "hidden", backdropFilter: "blur(12px)", boxShadow: "0 8px 40px rgba(100,20,160,0.15)" }}>
+                <div style={{ padding: "24px 28px", borderBottom: "1px solid rgba(150,40,200,0.12)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                    <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 18, fontWeight: 700, color: "#fff" }}>{item.name}</span>
+                    <span style={{ fontSize: 10, padding: "3px 10px", borderRadius: 20, background: "rgba(150,40,200,0.15)", border: "1px solid rgba(150,40,200,0.3)", color: "#C44FFF", fontFamily: "'Space Mono', monospace", letterSpacing: "0.5px" }}>{item.tag}</span>
+                    <span style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", fontFamily: "'Space Mono', monospace", marginLeft: "auto" }}>{item.date}</span>
                   </div>
-                ))}
+                  {item.description ? (
+                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.8)", lineHeight: 1.7, fontWeight: 300 }}>{item.description}</p>
+                  ) : (
+                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.25)", lineHeight: 1.7, fontStyle: "italic" }}>Description coming soon...</p>
+                  )}
+                </div>
+                <div style={{ overflow: "hidden" }}>
+                  <img src={`/${item.file}`} alt={item.name} style={{ width: "100%", height: "auto", display: "block", transition: "transform 0.4s ease" }}
+                    onMouseEnter={e => e.currentTarget.style.transform = "scale(1.02)"}
+                    onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </div>
 

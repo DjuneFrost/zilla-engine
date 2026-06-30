@@ -130,6 +130,49 @@ function PerfCard({ token, templateImg, logo, avgEntry, deployed, currentPrice }
   );
 }
 
+
+function FloatingPnlCard({ file, x, y, scale, delay }) {
+  return (
+    <div style={{
+      position: "absolute", left: `${x}%`, top: `${y}%`,
+      transform: `translate(-50%, -50%) scale(${scale})`,
+      width: 220, borderRadius: 14,
+      overflow: "hidden",
+      border: `1px solid rgba(150,40,200,${scale * 0.5})`,
+      boxShadow: `0 ${8*scale}px ${32*scale}px rgba(100,20,160,${scale*0.35})`,
+      animation: `floatCard${Math.round(delay*10)} ${3 + delay}s ease-in-out infinite`,
+      transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease, border-color 0.35s ease",
+      cursor: "pointer",
+      zIndex: Math.round(scale * 10),
+    }}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = `translate(-50%, -50%) scale(${Math.min(scale + 0.3, 1.15)})`;
+        e.currentTarget.style.boxShadow = `0 24px 60px rgba(150,40,200,0.55)`;
+        e.currentTarget.style.zIndex = 50;
+        e.currentTarget.style.borderColor = "rgba(180,79,255,0.9)";
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        e.currentTarget.style.boxShadow = `0 ${8*scale}px ${32*scale}px rgba(100,20,160,${scale*0.35})`;
+        e.currentTarget.style.zIndex = Math.round(scale * 10);
+        e.currentTarget.style.borderColor = `rgba(150,40,200,${scale * 0.5})`;
+      }}
+    >
+      <img src={`/${file}`} alt="PnL" style={{ width: "100%", height: "auto", display: "block" }} />
+    </div>
+  );
+}
+
+const PNL_CARDS = [
+  { file: "pnl1.jpg", x: 12,  y: 30, scale: 0.80, delay: 0.8 },
+  { file: "pnl2.png", x: 38,  y: 62, scale: 0.95, delay: 1.2 },
+  { file: "pnl3.jpg", x: 58,  y: 28, scale: 0.72, delay: 0.5 },
+  { file: "pnl4.jpg", x: 75,  y: 65, scale: 0.85, delay: 0.3 },
+  { file: "pnl5.png", x: 88,  y: 35, scale: 0.65, delay: 1.6 },
+  { file: "pnl6.png", x: 22,  y: 78, scale: 0.78, delay: 1.0 },
+  { file: "pnl7.png", x: 62,  y: 72, scale: 0.88, delay: 0.9 },
+];
+
 export default function DjuneFrostPage() {
   const [solPrice, setSolPrice] = useState(null);
   const [hypePrice, setHypePrice] = useState(null);
@@ -181,6 +224,15 @@ export default function DjuneFrostPage() {
         .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(60px, 10vw, 130px); line-height: 0.95; letter-spacing: -3px; margin-bottom: 20px; font-weight: 700; color: #fff; animation: fadeUp 0.8s 0.15s ease both; }
         .hero-title .outline { -webkit-text-stroke: 1.5px rgba(150,40,200,0.5); color: transparent; }
         .hero-sub { font-size: clamp(14px, 2vw, 17px); color: rgba(255,255,255,0.85); max-width: 500px; line-height: 1.7; margin-bottom: 36px; font-weight: 300; animation: fadeUp 0.8s 0.25s ease both; }
+        
+        @keyframes floatCard8 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-8px)} }
+        @keyframes floatCard12 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-10px)} }
+        @keyframes floatCard3 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-6px)} }
+        @keyframes floatCard5 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-9px)} }
+        @keyframes floatCard16 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-7px)} }
+        @keyframes floatCard10 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-11px)} }
+        @keyframes floatCard14 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-8px)} }
+        @keyframes floatCard9 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-10px)} }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
         @keyframes twinkle { 0%,100%{opacity:var(--op)} 50%{opacity:calc(var(--op)*0.3)} }
@@ -279,6 +331,46 @@ export default function DjuneFrostPage() {
       </section>
 
       <div className="divider" />
+
+      <div className="divider" />
+
+      {/* FLOATING PNL SECTION */}
+      <section style={{ position: "relative", zIndex: 1, width: "100%", padding: "60px 0" }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div className="section-label">Trading Highlights</div>
+          <div className="section-title">REAL TRADES</div>
+          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", maxWidth: 480, margin: "0 auto", fontWeight: 300 }}>Hover a card to zoom in</div>
+        </div>
+        {/* Starfield rectangle — full width */}
+        <div style={{
+          position: "relative",
+          width: "100%",
+          height: 680,
+          background: "rgba(8,0,20,0.7)",
+          borderTop: "1px solid rgba(150,40,200,0.2)",
+          borderBottom: "1px solid rgba(150,40,200,0.2)",
+          overflow: "hidden",
+          boxShadow: "0 0 100px rgba(100,20,160,0.12) inset",
+        }}>
+          {/* Stars */}
+          {Array.from({ length: 120 }, (_, i) => (
+            <div key={i} style={{
+              position: "absolute",
+              width: i % 7 === 0 ? 2 : 1,
+              height: i % 7 === 0 ? 2 : 1,
+              background: "#fff",
+              borderRadius: "50%",
+              top: `${(i * 37 + 11) % 100}%`,
+              left: `${(i * 53 + 7) % 100}%`,
+              opacity: ((i * 17 + 3) % 6) * 0.05 + 0.04,
+            }} />
+          ))}
+          {/* Purple glow center */}
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 50% 70% at 50% 50%, rgba(120,30,180,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
+          {/* Floating cards */}
+          {PNL_CARDS.map((card, i) => <FloatingPnlCard key={i} {...card} />)}
+        </div>
+      </section>
 
       {/* BUILT BY */}
       <section style={{ padding: "40px 48px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)", position: "relative", zIndex: 1 }}>
