@@ -174,6 +174,7 @@ const PNL_CARDS = [
 ];
 
 export default function DjuneFrostPage() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [solPrice, setSolPrice] = useState(null);
   const [hypePrice, setHypePrice] = useState(null);
   const [btcPrice, setBtcPrice] = useState(null);
@@ -209,6 +210,33 @@ export default function DjuneFrostPage() {
 
         .nav { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 100; width: calc(100% - 280px); max-width: 1000px; }
         .nav-pill { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; background: rgba(8,0,20,0.92); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; padding: 4px 8px 4px 14px; box-shadow: 0 4px 30px rgba(0,0,0,0.4); height: 44px; width: 100%; }
+        /* Mobile nav (hidden on desktop) */
+        .nav-mobile-bar { display: none; }
+        .nav-burger { display: none; }
+        .nav-mobile-menu { display: none; }
+        @media(max-width:768px){
+          .nav { display: none; }
+          .nav-mobile-bar { display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; right: 0; height: 64px; padding: 0 20px; background: rgba(5,0,12,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(150,40,200,0.15); z-index: 200; }
+          .nav-burger { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 12px; background: rgba(150,40,200,0.15); border: 1px solid rgba(150,40,200,0.3); cursor: pointer; }
+          .nav-mobile-menu { display: flex; flex-direction: column; gap: 4px; position: fixed; top: 72px; left: 16px; right: 16px; background: rgba(8,0,20,0.97); backdrop-filter: blur(24px); border: 1px solid rgba(150,40,200,0.25); border-radius: 20px; padding: 12px; z-index: 199; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+        }
+        .nav-burger span { display: block; width: 16px; height: 1.5px; background: #fff; margin: 2px 0; border-radius: 2px; transition: all 0.25s; }
+        .nav-burger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+        .nav-burger.open span:nth-child(2) { opacity: 0; }
+        .nav-burger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+        .nav-mobile-link { padding: 14px 16px; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.85); text-decoration: none; transition: background 0.2s; }
+        .nav-mobile-link.active { color: #C44FFF; background: rgba(150,40,200,0.12); }
+        .nav-mobile-auth { display: flex; gap: 8px; padding: 8px 4px 4px; margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .nav-mobile-login { flex: 1; text-align: center; padding: 10px; border-radius: 12px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); }
+        .nav-mobile-signup { flex: 1; text-align: center; padding: 10px; border-radius: 12px; background: rgba(150,40,200,0.25); border: 1px solid rgba(150,40,200,0.5); font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: #D44FFF; }
+        @media(max-width:768px){
+          .hero { padding: 100px 16px 60px; }
+          .section { padding: 60px 16px; }
+          .perf-cards { flex-direction: column; }
+          .footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 16px; }
+        }
+
+
         .nav-links { display: flex; align-items: center; gap: 2px; justify-content: center; }
         .nav-link { padding: 6px 22px; border-radius: 50px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.75); text-decoration: none; letter-spacing: 0.5px; transition: all 0.2s; border: 1px solid transparent; white-space: nowrap; }
         .nav-link:hover { color: rgba(255,255,255,0.8); }
@@ -243,15 +271,8 @@ export default function DjuneFrostPage() {
         .footer { border-top: 1px solid rgba(150,40,200,0.15); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; }
         .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(150,40,200,0.3), transparent); }
 
-                @media(max-width:768px){
-          .nav { padding: 0 16px; }
-          .nav-links { gap: 2px; }
-          .nav-link { padding: 6px 10px; font-size: 10px; }
-          .hero { padding: 100px 16px 60px; }
-          .section { padding: 60px 16px; }
-          .perf-cards { flex-direction: column; }
-          .footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 16px; }
-        }
+
+
       `}</style>
 
       {/* BG */}
@@ -264,7 +285,7 @@ export default function DjuneFrostPage() {
         {/* Blue bottom glow */}
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 30% at 50% 100%, rgba(30,20,180,0.25) 0%, rgba(20,10,120,0.1) 50%, transparent 80%)" }} />
       </div>
-      {/* NAV */}
+      {/* NAV — DESKTOP */}
       <nav className="nav">
         <div className="nav-pill">
           <img src="/logodfs.png" alt="Djune Frost" style={{ height: 36, width: "auto", objectFit: "contain", flexShrink: 0, marginRight: 8 }} />
@@ -276,6 +297,25 @@ export default function DjuneFrostPage() {
           <div className="nav-auth"><span className="nav-login">Log in</span><span className="nav-signup">Sign up</span></div>
         </div>
       </nav>
+
+      {/* NAV — MOBILE */}
+      <div className="nav-mobile-bar">
+        <img src="/logodfs.png" alt="Djune Frost" style={{ height: 30, width: "auto", objectFit: "contain" }} />
+        <div className={`nav-burger${mobileOpen ? " open" : ""}`} onClick={() => setMobileOpen(!mobileOpen)}>
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      {mobileOpen && (
+        <div className="nav-mobile-menu">
+          <a href="/" className="nav-mobile-link active" onClick={() => setMobileOpen(false)}>Home</a>
+          <a href="/dca-bots" className="nav-mobile-link" onClick={() => setMobileOpen(false)}>DCA Bots</a>
+          <a href="/strategy" className="nav-mobile-link" onClick={() => setMobileOpen(false)}>Strategy</a>
+          <div className="nav-mobile-auth">
+            <span className="nav-mobile-login">Log in</span>
+            <span className="nav-mobile-signup">Sign up</span>
+          </div>
+        </div>
+      )}
 
       {/* HERO */}
       <section className="hero" style={{ position: "relative", zIndex: 1 }}>
