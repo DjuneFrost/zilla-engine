@@ -365,8 +365,8 @@ export default function DjuneFrostPage() {
         </div>
         <div className="perf-cards">
           <PerfCard token="SOL" templateImg="dcasolana.png" logo="https://assets.coingecko.com/coins/images/4128/small/solana.png" avgEntry={81} deployed={450} currentPrice={solPrice?.price} />
-          <PerfCard token="SPCX" templateImg="dcaspcx.png" logo="https://wsrv.nl/?w=32&h=32&url=https%3A%2F%2Fs3-symbol-logo.tradingview.com%2Fspacex.svg&dpr=2&quality=80" avgEntry={162} deployed={500} currentPrice={null} />
-          <PerfCard token="NVDA" templateImg="dcanvda.png" logo="https://assets.lighter.xyz/fe/token/nvda.png" avgEntry={114} deployed={500} currentPrice={null} />
+          <PerfCard token="HYPE" templateImg="dcahype.png" logo="https://dd.dexscreener.com/ds-data/tokens/hyperliquid/0x0d01dc56dcaaca66ad901c959b4011ec.png" avgEntry={30} deployed={360} currentPrice={hypePrice?.price} />
+          <PerfCard token="BTC" templateImg="dcabtc.png" logo="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" avgEntry={67852.54} deployed={845} currentPrice={btcPrice?.price} />
         </div>
       </section>
 

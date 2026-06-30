@@ -8,9 +8,9 @@ const STARS = Array.from({ length: 80 }, (_, i) => ({
 }));
 
 const DCA_CARDS = [
-  "dcabtc1.png",
   "dcasolana1.png",
   "dcahype1.png",
+  "dcabtc1.png",
   "dcazec1.png",
   "dcagold1.png",
   "dcasilver1.png",
