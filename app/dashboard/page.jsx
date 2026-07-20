@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import DcaBotPage from "./dca-bot-content";
 
 const STARS = Array.from({ length: 60 }, (_, i) => ({
   id: i, top: `${(i * 37 + 11) % 100}%`, left: `${(i * 53 + 7) % 100}%`,
@@ -182,7 +183,7 @@ function PlaceholderPage({ label, sub }) {
 const PAGES = {
   dashboard: () => <DashboardContent />,
   strategy:  () => <PlaceholderPage label="Strategy Library" sub="Purchase and manage your trading strategies here." />,
-  "dca-bots": () => <PlaceholderPage label="DCA Bots" sub="Configure and monitor your DCA bots here." />,
+  "dca-bots": () => <DcaBotPage />,
   settings:  () => <PlaceholderPage label="Settings" sub="Manage your account and preferences here." />,
 };
 
