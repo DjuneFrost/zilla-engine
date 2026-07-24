@@ -249,13 +249,13 @@ export default function DjuneFrostPage() {
         .nav-login { padding: 6px 18px; border-radius: 50px; background: transparent; border: 1px solid transparent; color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; text-decoration: none; font-family: 'Space Mono', monospace; letter-spacing: 0.5px; white-space: nowrap; cursor: default; }
         .nav-signup { padding: 6px 18px; border-radius: 50px; background: rgba(150,40,200,0.25); border: 1px solid rgba(150,40,200,0.5); color: #D44FFF; font-size: 11px; font-weight: 700; text-decoration: none; font-family: 'Space Mono', monospace; letter-spacing: 0.5px; white-space: nowrap; cursor: default; }
 
-        .hero { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 128px 24px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0px 24px 0px; text-align: center; position: relative; overflow: hidden; }
         .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(150,40,200,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(150,40,200,0.06) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%); }
         .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); font-size: 12px; color: rgba(255,255,255,0.85); letter-spacing: 0.5px; margin-bottom: 24px; font-family: 'Space Mono', monospace; text-transform: uppercase; animation: fadeUp 0.8s ease both; }
         .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #9B30D0; box-shadow: 0 0 8px #9B30D0; animation: blink 2s infinite; }
         .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(60px, 10vw, 130px); line-height: 0.95; letter-spacing: -3px; margin-bottom: 20px; font-weight: 700; color: #fff; animation: fadeUp 0.8s 0.15s ease both; }
         .hero-title .outline { -webkit-text-stroke: 1.5px rgba(150,40,200,0.5); color: transparent; }
-        .hero-sub { font-size: clamp(14px, 2vw, 17px); color: rgba(255,255,255,0.85); max-width: 500px; line-height: 1.7; margin-bottom: 36px; font-weight: 300; animation: fadeUp 0.8s 0.25s ease both; }
+        .hero-sub { font-size: clamp(14px, 2vw, 17px); color: rgba(255,255,255,0.85); max-width: 500px; line-height: 1.7; margin-bottom: 16px; font-weight: 300; animation: fadeUp 0.8s 0.25s ease both; }
         
         @keyframes floatCard8 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-8px)} }
         @keyframes floatCard12 { 0%,100%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(0)} 50%{transform:translate(-50%,-50%) scale(var(--s,1)) translateY(-10px)} }
@@ -324,11 +324,7 @@ export default function DjuneFrostPage() {
       {/* HERO */}
       <section className="hero" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid" />
-<div className="hero-badge"><span className="hero-badge-dot" />Trader · Builder · CEO of Pangeon</div>
-        <h1 className="hero-title">
-          <div>DJUNE</div>
-          <div className="outline">FROST</div>
-        </h1>
+<img src="/dfslogo.png" alt="Djune Frost" style={{ maxWidth: "clamp(220px, 38vw, 480px)", width: "100%", height: "auto", display: "block", margin: "0 auto -140px", animation: "fadeUp 0.8s 0.15s ease both" }} />
         <p className="hero-sub">Trader, Strategy builder, Bots creator, Building smarter ways to trade, CEO of Pangeon</p>
 
       </section>
