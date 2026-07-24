@@ -292,7 +292,7 @@ export default function DjuneFrostPage() {
       {/* NAV — DESKTOP */}
       <nav className="nav">
         <div className="nav-pill">
-          <img src="/logodfs.png" alt="Djune Frost" style={{ height: 36, width: "auto", objectFit: "contain", flexShrink: 0, marginRight: 8 }} />
+          <img src="/dfslogo3.png" alt="Djune Frost" style={{ height: 34, width: "auto", objectFit: "contain", flexShrink: 0, marginRight: 8, maxHeight: "100%" }} />
           <div className="nav-links">
             <a href="/" className="nav-link active">Home</a>
             <a href="/dca-bots" className="nav-link">DCA Bots</a>
@@ -304,7 +304,7 @@ export default function DjuneFrostPage() {
 
       {/* NAV — MOBILE */}
       <div className="nav-mobile-bar">
-        <img src="/logodfs.png" alt="Djune Frost" style={{ height: 30, width: "auto", objectFit: "contain" }} />
+        <img src="/dfslogo3.png" alt="Djune Frost" style={{ height: 30, width: "auto", objectFit: "contain" }} />
         <div className={`nav-burger${mobileOpen ? " open" : ""}`} onClick={() => setMobileOpen(!mobileOpen)}>
           <span></span><span></span><span></span>
         </div>
@@ -432,10 +432,8 @@ export default function DjuneFrostPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="footer" style={{ position: "relative", zIndex: 1 }}>
-        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: 2 }}>DJUNE FROST</div>
-        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontFamily: "'Space Mono', monospace" }}>© 2026 · Powered by Pangeon DEX</div>
-        <a href="https://pangeon.xyz" style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", textDecoration: "none", fontFamily: "'DM Sans', sans-serif" }}>Pangeon DEX ↗</a>
+      <footer style={{ borderTop: "1px solid rgba(150,40,200,0.1)", padding: "24px 48px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", zIndex: 1 }}>
+        <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>© 2026 Djune Frost Strategy</div>
       </footer>
     </>
   );
